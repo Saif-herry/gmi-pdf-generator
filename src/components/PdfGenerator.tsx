@@ -1,51 +1,51 @@
-import React, { useState, useEffect } from "react";
-import MyDocument from "@/components/MyDocument";
-import dynamic from "next/dynamic";
+import React, { useState, useEffect } from 'react';
+import MyDocument from '@/components/MyDocument';
+import dynamic from 'next/dynamic';
 const PDFViewer = dynamic(
-  () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),
+  () => import('@react-pdf/renderer').then((mod) => mod.PDFViewer),
   { ssr: false }
 );
 const PdfGenerator = () => {
-  const [text, setText] = useState("");
-  const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [pdfUrl, setPdfUrl] = useState("");
+  const [text, setText] = useState('');
+  const [title, setTitle] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [pdfUrl, setPdfUrl] = useState('');
   const [generatedData, setGeneratedData] = useState({
-    title: "",
-    text: "",
-    imageUrl: "",
+    title: '',
+    text: '',
+    imageUrl: ''
   });
   const handleGeneratePdfUrl = () => {
-    const url = new URL("/api/generate-pdf", window.location.origin);
-    url.searchParams.append("title", title);
-    url.searchParams.append("text", text);
-    url.searchParams.append("imageUrl", imageUrl);
+    const url = new URL('/api/generate-pdf', window.location.origin);
+    url.searchParams.append('title', title);
+    url.searchParams.append('text', text);
+    url.searchParams.append('imageUrl', imageUrl);
     setPdfUrl(url.toString());
 
-    const storedPdfs = JSON.parse(localStorage.getItem("pdfs") || "[]");
+    const storedPdfs = JSON.parse(localStorage.getItem('pdfs') || '[]');
     storedPdfs.push({
       title,
       text,
       imageUrl,
       url: url.toString(),
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString()
     });
-    localStorage.setItem("pdfs", JSON.stringify(storedPdfs));
-    alert("PDF  generated successfully!");
+    localStorage.setItem('pdfs', JSON.stringify(storedPdfs));
+    alert('PDF  generated successfully!');
     setGeneratedData({
       title,
       text,
-      imageUrl,
+      imageUrl
     });
-    setText("");
-    setTitle("");
-    setImageUrl("");
+    setText('');
+    setTitle('');
+    setImageUrl('');
   };
 
   return (
     <div className="">
       <div className="text-5xl font-bold text-center pb-4">
-        <p className="text-white "> Pdf Generator </p>
+        <p className="text-white "> Pdf Generator & Viewer</p>
       </div>
       <input
         value={title}
